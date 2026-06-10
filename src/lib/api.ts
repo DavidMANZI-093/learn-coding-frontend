@@ -6,7 +6,7 @@ if (!API_URL) {
 
 export type ApiError = {
   message: string;
-  errors?: Record;
+  errors?: Record<string, any>;
 };
 
 export type AuthResponse = {
@@ -19,10 +19,10 @@ export type User = {
   email: string;
 };
 
-async function request(
+async function request<T = any>(
   path: string,
   options: RequestInit = {}
-): Promise {
+): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +36,7 @@ async function request(
     throw new Error(error.message || "Something went wrong");
   }
 
-  return res.json() as Promise;
+  return res.json() as Promise<T>;
 }
 
 export const api = {
